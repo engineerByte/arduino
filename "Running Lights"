@@ -1,0 +1,36 @@
+const int ledPins[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}; // LED pinleri
+const int leds = 12; // Toplam LED sayısı
+const int time = 50; // Her LED'in yanma süresi (ms)
+
+void setup() {
+  // LED pinlerini çıkış olarak ayarla
+  for (int i = 0; i < leds; i++) {
+    pinMode(ledPins[i], OUTPUT); // Pinleri çıkış olarak ayarlıyoruz
+  }
+}
+
+void loop() {
+  // İlk döngü: LED'leri sırasıyla yak ve her biri yanık kalacak
+  for (int i = leds-1; i >= 0; i--) { // LED'leri sondan başa doğru sırayla çalıştırıyoruz
+    for (int j = 0; j < i; j++) { // Her yeni LED eklenince önceki LED'ler de yanık kalacak
+      digitalWrite(ledPins[j], HIGH);  // LED'i yak
+      delay(time); // Gecikme ekleyerek LED'lerin yanma süresi belirleniyor
+      digitalWrite(ledPins[j], LOW);  // LED'i söndür
+    }
+
+    digitalWrite(ledPins[i], HIGH); // Sonraki LED'i yak
+    delay(time); // Gecikme ekle
+  }
+
+  // İkinci döngü: LED'leri ters sırayla yak ve önceki LED'ler yanık kalacak
+  for (int i = 0; i < leds; i++) { // Bu sefer baştan sona doğru çalışıyoruz
+    for (int j = i; j >= 0; j--) { // LED'ler tekrar önceki LED'leri yakacak
+      digitalWrite(ledPins[j], HIGH);  // LED'i yak
+      delay(time); // Gecikme ekle
+      digitalWrite(ledPins[j], LOW);  // LED'i söndür
+    }
+
+    digitalWrite(ledPins[i], LOW); // Sonra sıradaki LED'i kapatıyoruz
+    delay(time); // Bir gecikme ekliyoruz
+  }
+}
